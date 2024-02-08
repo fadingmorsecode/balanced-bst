@@ -133,6 +133,8 @@ class Tree {
   find(x, node = this.root) {
     if (x === node.data) {
       return node;
+    } else if (node.left === null && node.right === null) {
+      return null;
     }
 
     // recursive cases
@@ -149,4 +151,4 @@ let draculaTree = new Tree(draculaArray);
 prettyPrint(draculaTree.root);
 draculaTree.delete(8);
 prettyPrint(draculaTree.root);
-console.log(draculaTree.find(7));
+console.log(draculaTree.find(10));
