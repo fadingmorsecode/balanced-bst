@@ -129,6 +129,19 @@ class Tree {
       this.delete(x, node.right, parent, side);
     }
   }
+
+  find(x, node = this.root) {
+    if (x === node.data) {
+      return node;
+    }
+
+    // recursive cases
+    if (x < node.data) {
+      return this.find(x, node.left);
+    } else {
+      return this.find(x, node.right);
+    }
+  }
 }
 
 draculaArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -136,3 +149,4 @@ let draculaTree = new Tree(draculaArray);
 prettyPrint(draculaTree.root);
 draculaTree.delete(8);
 prettyPrint(draculaTree.root);
+console.log(draculaTree.find(7));
