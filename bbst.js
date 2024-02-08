@@ -107,6 +107,19 @@ class Tree {
         return;
       }
       // case three: node has two children
+      // find the value that is next biggest to node
+      // look to the right subtree of the node
+      // follow paths all the way to the left, until a node left subtree is empty
+      let traversalNode = node.right;
+      let traversalParent;
+      while (traversalNode.left !== null) {
+        traversalParent = traversalNode;
+        traversalNode = traversalNode.left;
+      }
+      // replace node with inorder successor (io) and link io child to parent
+      node.data = traversalNode.data;
+      traversalParent.left = traversalNode.right;
+      return;
     }
 
     if (x < node.data) {
@@ -121,7 +134,5 @@ class Tree {
 draculaArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let draculaTree = new Tree(draculaArray);
 prettyPrint(draculaTree.root);
-draculaTree.insert(24);
-prettyPrint(draculaTree.root);
-draculaTree.delete(9);
+draculaTree.delete(8);
 prettyPrint(draculaTree.root);
