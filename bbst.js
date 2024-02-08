@@ -1,5 +1,4 @@
 // function provided by TOP to visualize binary search tree;
-
 const prettyPrint = (node, prefix = '', isLeft = true) => {
   if (node === null) {
     return;
@@ -104,11 +103,10 @@ class Tree {
         } else if (node.right) {
           tempSide = 'right';
         }
-        // replace value and then delete leaf
-        parent[`${side}`].data = node[`${tempSide}`].data;
-        parent[`${side}`][`${tempSide}`] = null;
+        parent[`${side}`] = node[`${tempSide}`];
         return;
       }
+      // case three: node has two children
     }
 
     if (x < node.data) {
@@ -123,5 +121,7 @@ class Tree {
 draculaArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let draculaTree = new Tree(draculaArray);
 prettyPrint(draculaTree.root);
-draculaTree.delete(324);
+draculaTree.insert(24);
+prettyPrint(draculaTree.root);
+draculaTree.delete(9);
 prettyPrint(draculaTree.root);
