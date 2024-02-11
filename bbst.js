@@ -121,9 +121,8 @@ class Tree {
       traversalParent.left = traversalNode.right;
       return;
     }
-
+    // recursive cases
     if (x < node.data) {
-      // recursive cases
       this.delete(x, node.left, parent, side);
     } else {
       this.delete(x, node.right, parent, side);
@@ -144,6 +143,76 @@ class Tree {
       return this.find(x, node.right);
     }
   }
+
+  // level order should return an array of values
+  // enqueue the parent node, then print, enqueue any children and then dequeue.
+  levelOrder(node = this.root, queue = [], result = []) {
+    if (node === null) {
+      return;
+    }
+    queue.push(node);
+    while (queue.length !== 0) {
+      let front = queue[0];
+      result.push(front.data);
+      if (front.left) {
+        queue.push(front.left);
+      }
+      if (front.right) {
+        queue.push(front.right);
+      }
+      queue.shift();
+    }
+    return result;
+  }
+
+  levelOrderRecursive(node = this.root, queue = [], result = []) {
+    // base case
+    if (node === null) {
+      return result;
+    }
+    result.push(node.data);
+    if (node.left) {
+      queue.push(node.left);
+    }
+    if (node.right) {
+      queue.push(node.right);
+    }
+    if (queue.length !== 0) {
+      this.levelOrderRecursive(queue.shift(), queue, result);
+    }
+
+    return result;
+  }
+
+  inOrder(node = this.root, result = []) {
+    if (node === null) {
+      return;
+    }
+    this.inOrder(node.left, result);
+    result.push(node.data);
+    this.inOrder(node.right, result);
+    return result;
+  }
+
+  preOrder(node = this.root, result = []) {
+    if (node === null) {
+      return;
+    }
+    result.push(node.data);
+    this.preOrder(node.left, result);
+    this.preOrder(node.right, result);
+    return result;
+  }
+
+  postOrder(node = this.root, result = []) {
+    if (node === null) {
+      return;
+    }
+    this.postOrder(node.left, result);
+    this.postOrder(node.right, result);
+    result.push(node.data);
+    return result;
+  }
 }
 
 draculaArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -152,3 +221,8 @@ prettyPrint(draculaTree.root);
 draculaTree.delete(8);
 prettyPrint(draculaTree.root);
 console.log(draculaTree.find(10));
+console.log(draculaTree.levelOrder());
+console.log(draculaTree.levelOrderRecursive());
+console.log(draculaTree.inOrder());
+console.log(draculaTree.preOrder());
+console.log(draculaTree.postOrder());
