@@ -57,20 +57,25 @@ class Tree {
   }
 
   insert(x, node = this.root) {
-    // base cases
-    if (x < node.data && node.left === null) {
-      node.left = new Node(x);
-      return;
-    } else if (x > node.data && node.right === null) {
-      node.right = new Node(x);
+    // base case
+    if (node === null) {
+      this.root = new Node(x);
       return;
     }
 
     // recursive cases
     if (x < node.data) {
-      this.insert(x, node.left);
+      if (node.left === null) {
+        node.left = new Node(x);
+      } else {
+        this.insert(x, node.left);
+      }
     } else {
-      this.insert(x, node.right);
+      if (node.right === null) {
+        node.right = new Node(x);
+      } else {
+        this.insert(x, node.right);
+      }
     }
   }
 
@@ -213,16 +218,88 @@ class Tree {
     result.push(node.data);
     return result;
   }
+
+  height(node) {
+    if (node === null) {
+      return -1;
+    }
+
+    let leftHeight = this.height(node.left);
+    let rightHeight = this.height(node.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  depth(node) {
+    if (node === null) {
+      return 0;
+    }
+    let left = this.depth(node.left);
+    let right = this.depth(node.right);
+    return Math.max(left, right) + 1;
+  }
+
+  isBalanced(node) {
+    if (node === null) {
+      return true;
+    }
+    let leftHeight = this.height(node.left);
+    let rightHeight = this.height(node.right);
+
+    if (
+      Math.abs(leftHeight - rightHeight) <= 1 &&
+      this.isBalanced(node.left) === true &&
+      this.isBalanced(node.right) === true
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getAllNodes(node, result = []) {
+    if (node === null) {
+      return;
+    }
+    result.push(node.data);
+    this.getAllNodes(node.left, result);
+    this.getAllNodes(node.right, result);
+    return result;
+  }
+
+  rebalance() {
+    let unbalancedArr = this.getAllNodes(this.root);
+    this.array = this.sortData(unbalancedArr);
+    this.root = this.buildTree(this.array, 0, this.array.length - 1);
+  }
 }
 
-draculaArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-let draculaTree = new Tree(draculaArray);
-prettyPrint(draculaTree.root);
-draculaTree.delete(8);
-prettyPrint(draculaTree.root);
-console.log(draculaTree.find(10));
-console.log(draculaTree.levelOrder());
-console.log(draculaTree.levelOrderRecursive());
-console.log(draculaTree.inOrder());
-console.log(draculaTree.preOrder());
-console.log(draculaTree.postOrder());
+function randomNumArr() {
+  let arr = [];
+  for (let i = 0; i < 20; i++) {
+    arr.push(Math.floor(Math.random() * 100));
+  }
+  return arr;
+}
+
+function driverScript() {
+  let randomArr = randomNumArr();
+  let randomTree = new Tree(randomArr);
+  console.log(randomTree.isBalanced(randomTree.root));
+  console.log(randomTree.levelOrderRecursive(randomTree.root));
+  console.log(randomTree.preOrder(randomTree.root));
+  console.log(randomTree.postOrder(randomTree.root));
+  console.log(randomTree.inOrder(randomTree.root));
+  for (let i = 0; i < 13; i++) {
+    randomTree.insert(Math.floor(Math.random() * 100) + 101, randomTree.root);
+  }
+  console.log(randomTree.isBalanced(randomTree.root));
+  randomTree.rebalance();
+  console.log(randomTree.isBalanced(randomTree.root));
+  console.log(randomTree.levelOrderRecursive(randomTree.root));
+  console.log(randomTree.preOrder(randomTree.root));
+  console.log(randomTree.postOrder(randomTree.root));
+  console.log(randomTree.inOrder(randomTree.root));
+}
+
+driverScript();
